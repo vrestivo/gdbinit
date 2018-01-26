@@ -36,7 +36,7 @@ define hook-stop
 
   #print instructions around rip
   printf "%s", $INST_BANNER
-  x/16i $rip-12
+  disassemble $rip
 
   #print registers in hex
   printf "%s", $REGS_BANNER
@@ -77,10 +77,11 @@ define print_stack
   printf "\tThe stack is: %d bytes\n\n", $STACK_SIZE
 
   while($COUNTER < $STACK_SIZE)
-    set $CURRENT = $rbp-($STACK_SIZE-$COUNTER)
+    set $CURRENT = $rsp+$COUNTER
     x/xw $CURRENT
     set $COUNTER = $COUNTER += 4
   end
-  printf "\n\n"
-
+    x/xw $rbp
+    x/xw $rbp+4
+ printf "\n\n"
 end
